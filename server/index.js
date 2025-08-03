@@ -49,16 +49,9 @@ app.get('/api/health', (req, res) => {
     environment: process.env.NODE_ENV || 'development'
   });
 });
-
-// Serve static files in production
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../client/build')));
-  
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
-  });
-}
-
+app.get('/', (req, res) => {
+  res.json({ message: 'RSVP Manager API is running' });
+});
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error('Server error:', err);
