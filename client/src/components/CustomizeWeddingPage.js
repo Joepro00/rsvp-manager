@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import CountdownTimer from './CountdownTimer';
+import { API_URL } from '../config';
 
 const CustomizeWeddingPage = () => {
   const { currentWedding, setCurrentWedding } = useAuth();
@@ -115,7 +116,7 @@ const CustomizeWeddingPage = () => {
       console.log('Current wedding object:', currentWedding);
       console.log('Current wedding colors:', currentWedding.colors);
       
-      const response = await axios.put(`/api/weddings/${currentWedding.weddingId}`, updatedData);
+      const response = await axios.put(`${API_URL}/api/weddings/${currentWedding.weddingId}`, updatedData);
       console.log('Save response:', response.data);
       
       const updatedWedding = {

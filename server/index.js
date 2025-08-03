@@ -27,7 +27,7 @@ app.use('/api/', limiter);
 // CORS configuration
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://yourdomain.com'] 
+    ? ['https://rsvp-manager-client.onrender.com'] 
     : ['http://localhost:3000'],
   credentials: true
 }));
@@ -41,6 +41,22 @@ app.use('/api/auth', authRoutes);
 app.use('/api/weddings', weddingRoutes);
 app.use('/api/rsvp', rsvpRoutes);
 
+// Root endpoint
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'RSVP Manager API is running',
+    status: 'OK', 
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development',
+    endpoints: {
+      health: '/api/health',
+      auth: '/api/auth',
+      weddings: '/api/weddings',
+      rsvp: '/api/rsvp'
+    }
+  });
+});
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ 
@@ -50,14 +66,8 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Serve static files in production
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../client/build')));
-  
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
-  });
-}
+// API-only server - no static file serving
+// The frontend is deployed separately as a static site
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -71,6 +81,15 @@ app.use((err, req, res, next) => {
 // 404 handler for API routes
 app.use('/api/*', (req, res) => {
   res.status(404).json({ error: 'API endpoint not found' });
+});
+
+// Catch-all handler for non-API routes
+app.use('*', (req, res) => {
+  res.status(404).json({ 
+    error: 'Not found',
+    message: 'This is an API-only server. Please use the frontend application.',
+    frontend: 'https://rsvp-manager-client.onrender.com'
+  });
 });
 
 // Initialize database and start server

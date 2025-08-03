@@ -5,6 +5,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import CountdownTimer from './CountdownTimer';
 import AdminLoginModal from './AdminLoginModal';
+import { API_URL } from '../config';
 
 const RSVPForm = () => {
   const { weddingId: urlWeddingId } = useParams();
@@ -83,7 +84,7 @@ const RSVPForm = () => {
       
       console.log('Fetching from API...');
       // Normal flow - fetch from API with aggressive cache busting
-      const response = await axios.get(`/api/rsvp/${weddingId}/details?t=${Date.now()}&refresh=${Date.now()}&force=true&nocache=${Date.now()}&v=${Date.now()}`);
+      const response = await axios.get(`${API_URL}/api/rsvp/${weddingId}/details?t=${Date.now()}&refresh=${Date.now()}&force=true&nocache=${Date.now()}&v=${Date.now()}`);
       console.log('RSVP Form received wedding data:', response.data.wedding);
       console.log('Colors:', response.data.wedding.colors);
       console.log('Primary color:', response.data.wedding.colors?.primary);
@@ -116,7 +117,7 @@ const RSVPForm = () => {
 
     setSubmitting(true);
     try {
-      await axios.post(`/api/rsvp/${weddingId}/submit`, formData);
+      await axios.post(`${API_URL}/api/rsvp/${weddingId}/submit`, formData);
       setSubmitted(true);
       toast.success('Thank you for RSVPing!');
     } catch (error) {

@@ -20,6 +20,7 @@ import toast from 'react-hot-toast';
 import { Menu } from '@headlessui/react';
 import CustomizeRSVPForm from './CustomizeRSVPForm';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../config';
 
 const WeddingDashboard = () => {
   const { currentWedding, logoutFromWedding } = useAuth();
@@ -40,8 +41,8 @@ const WeddingDashboard = () => {
   const fetchData = async () => {
     try {
       const [statsResponse, responsesResponse] = await Promise.all([
-        axios.get(`/api/rsvp/${currentWedding.weddingId}/statistics`),
-        axios.get(`/api/rsvp/${currentWedding.weddingId}/responses`)
+        axios.get(`${API_URL}/api/rsvp/${currentWedding.weddingId}/statistics`),
+        axios.get(`${API_URL}/api/rsvp/${currentWedding.weddingId}/responses`)
       ]);
       
       setStats(statsResponse.data.statistics);
@@ -55,7 +56,7 @@ const WeddingDashboard = () => {
 
   const handleExport = async (filterType = 'all') => {
     try {
-      const response = await axios.get(`/api/rsvp/${currentWedding.weddingId}/export?filter=${filterType}`, {
+      const response = await axios.get(`${API_URL}/api/rsvp/${currentWedding.weddingId}/export?filter=${filterType}`, {
         responseType: 'blob'
       });
       
@@ -79,7 +80,7 @@ const WeddingDashboard = () => {
     }
 
     try {
-      await axios.delete(`/api/rsvp/${currentWedding.weddingId}/responses/${responseId}`);
+      await axios.delete(`${API_URL}/api/rsvp/${currentWedding.weddingId}/responses/${responseId}`);
       toast.success('RSVP response deleted successfully');
       fetchData(); // Refresh the data
     } catch (error) {
@@ -102,7 +103,7 @@ const WeddingDashboard = () => {
     try {
       // Delete all duplicates
       const deletePromises = duplicateIds.map(id => 
-        axios.delete(`/api/rsvp/${currentWedding.weddingId}/responses/${id}`)
+        axios.delete(`${API_URL}/api/rsvp/${currentWedding.weddingId}/responses/${id}`)
       );
       
       await Promise.all(deletePromises);

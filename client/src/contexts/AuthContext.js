@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { API_URL } from '../config';
 
 const AuthContext = createContext();
 
@@ -38,7 +39,7 @@ export const AuthProvider = ({ children }) => {
   const loginAsMaster = async (code) => {
     setLoading(true);
     try {
-      const response = await axios.post('/api/auth/master-login', { code });
+      const response = await axios.post(`${API_URL}/api/auth/master-login`, { code });
       
       if (response.data.success) {
         setIsMasterAdmin(true);
@@ -59,7 +60,7 @@ export const AuthProvider = ({ children }) => {
   const loginAsWeddingAdmin = async (adminCode) => {
     setLoading(true);
     try {
-      const response = await axios.post('/api/auth/wedding-login', { adminCode });
+      const response = await axios.post(`${API_URL}/api/auth/wedding-login`, { adminCode });
       
       if (response.data.success) {
         setCurrentWedding(response.data.wedding);

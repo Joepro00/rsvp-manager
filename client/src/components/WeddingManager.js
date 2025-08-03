@@ -14,6 +14,7 @@ import {
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../config';
 
 const WeddingManager = () => {
   const { logout } = useAuth();
@@ -28,7 +29,7 @@ const WeddingManager = () => {
 
   const fetchWeddings = async () => {
     try {
-      const response = await axios.get('/api/weddings');
+      const response = await axios.get(`${API_URL}/api/weddings`);
       setWeddings(response.data.weddings);
     } catch (error) {
       toast.error('Failed to fetch weddings');
@@ -63,7 +64,7 @@ const WeddingManager = () => {
         ]
       };
 
-      const response = await axios.post('/api/weddings', weddingData);
+      const response = await axios.post(`${API_URL}/api/weddings`, weddingData);
       const newWedding = response.data.wedding;
       
       // Set as current wedding and navigate to dashboard
@@ -83,7 +84,7 @@ const WeddingManager = () => {
     }
 
     try {
-      await axios.delete(`/api/weddings/${weddingId}`);
+      await axios.delete(`${API_URL}/api/weddings/${weddingId}`);
       setWeddings(weddings.filter(w => w.weddingId !== weddingId));
       // Wedding deleted silently
     } catch (error) {
