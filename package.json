@@ -1,23 +1,17 @@
 {
-  "name": "rsvp-manager",
+  "name": "rsvp-manager-api",
   "version": "1.0.0",
-  "description": "A complete RSVP management system for multiple weddings",
-  "main": "server/index.js",
+  "description": "RSVP Manager API - Backend only",
+  "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "nodemon server/index.js",
-    "client": "cd client && npm start",
-    "build": "cd client && npm run build",
-    "install-client": "cd client && npm install",
-    "install-server": "npm install",
-    "install-all": "npm run install-server && npm run install-client",
-    "start": "node server/index.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "keywords": [
     "rsvp",
     "wedding",
-    "management",
-    "react",
+    "api",
+    "backend",
     "nodejs"
   ],
   "author": "RSVP Manager",
@@ -35,7 +29,9 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "concurrently": "^8.2.0",
     "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
   }
 }
